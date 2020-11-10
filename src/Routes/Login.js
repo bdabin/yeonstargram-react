@@ -1,12 +1,14 @@
 import Axios from 'axios';
 import React from 'react';
 import { useCookies } from 'react-cookie';
+import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import styled, { keyframes } from 'styled-components';
 import Button from '../Components/Button';
 import { Logo } from '../Components/Icons';
 import Input from '../Components/Input';
 import useInput from '../Hooks/useInput';
+import { loginSuccess } from '../store';
 
 const animation = keyframes`
   from {
@@ -43,7 +45,7 @@ const Wrapper = styled.div`
 	padding: 0 16px;
 `;
 
-const Login = ({ history }) => {
+const Login = ({ history, dispatch }) => {
 	const email = useInput('');
 	const password = useInput('');
 	const [cookie, setCookie] = useCookies(['accountToken']);
@@ -65,8 +67,8 @@ const Login = ({ history }) => {
 
 			if (response.status === 200) {
 				const user = await Axios.get('/api/account');
-				localStorage.setItem('user', JSON.stringify(user.data));
-				history.push('/feed');
+				dispatch(loginSuccess(user.data));
+				history.push('/');
 			}
 		} catch (e) {
 			toast.error('이메일과 비밀번호를 확인해주세요.');
@@ -86,8 +88,13 @@ const Login = ({ history }) => {
 			</LogoWrapper>
 			<form onSubmit={onSubmit}>
 				<InputWrap>
-					<Input placeholder={'이메일'} type='email' {...email} />
-					<Input placeholder={'비밀번호'} type='password' {...password} />
+					<Input placeholder={'이메일'} type='email' value={email.value} onChange={email.onChange} />
+					<Input
+						placeholder={'비밀번호'}
+						type='password'
+						value={password.value}
+						onChange={password.onChange}
+					/>
 					<Button text={'로그인'} />
 				</InputWrap>
 			</form>
@@ -95,4 +102,8 @@ const Login = ({ history }) => {
 	);
 };
 
-export default Login;
+const getCurrentDispatch = (dispatch) => {
+	return { dispatch };
+};
+
+export default connect(null, getCurrentDispatch)(Login);

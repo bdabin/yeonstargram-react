@@ -8,13 +8,12 @@ import Theme from '../Styles/Theme';
 import Routes from './Routes';
 
 export default () => {
-	const isLoggedIn = Boolean(localStorage.getItem('user')) || false;
 	return (
 		<ThemeProvider theme={Theme}>
 			<>
 				<GlobalStyles />
 				<Router>
-					<Routes isLoggedIn={isLoggedIn} />
+					<Routes />
 				</Router>
 				<ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
 			</>

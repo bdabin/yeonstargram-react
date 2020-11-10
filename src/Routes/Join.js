@@ -95,11 +95,21 @@ const Join = ({ history }) => {
 			</LogoWrapper>
 			<form onSubmit={onSubmit}>
 				<InputWrap>
-					<Input placeholder={'이메일'} type='email' {...email} />
-					<Input placeholder={'비밀번호'} type='password' {...password} />
-					<Input placeholder={'비밀번호 확인'} type='password' {...repassword} />
-					<Input placeholder={'이름'} {...username} />
-					<Input placeholder={'휴대폰번호'} {...phone} />
+					<Input placeholder={'이메일'} type='email' value={email.value} onChange={email.onChange} />
+					<Input
+						placeholder={'비밀번호'}
+						type='password'
+						value={password.value}
+						onChange={password.onChange}
+					/>
+					<Input
+						placeholder={'비밀번호 확인'}
+						type='password'
+						value={repassword.value}
+						onChange={repassword.onChange}
+					/>
+					<Input placeholder={'이름'} value={username.value} onChange={username.onChange} />
+					<Input placeholder={'휴대폰번호'} value={phone.value} onChange={phone.value} />
 					<Button text={'회원가입'} />
 				</InputWrap>
 			</form>

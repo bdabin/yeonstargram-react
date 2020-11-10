@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Header from '../Components/Header';
@@ -8,8 +9,11 @@ import Post from '../Components/Post';
 
 const Wrapper = styled.div``;
 
-const Feed = () => {
-	const user = JSON.parse(localStorage.getItem('user'));
+const Feed = ({
+	state: {
+		user: { id }
+	}
+}) => {
 	const [feeds, setFeeds] = useState([]);
 	const getFeeds = async () => {
 		try {
@@ -20,16 +24,20 @@ const Feed = () => {
 					post.image = `/api/image/${url[url.length - 1]}`;
 				}
 
-				const result = post.like.find((data) => data.user_id === user.id);
+				const result = post.like.find((data) => data.user_id === id);
 				post.likeIt = Boolean(result);
+
+				post.likeCount = post.like.length;
 				return post;
 			});
-			setFeeds(data);
+			setFeeds(data.reverse());
 		} catch {
 			toast.error('피드를 불러올 수 없습니다.');
 		}
 	};
-	useEffect(getFeeds);
+	useEffect(() => {
+		getFeeds();
+	}, []);
 	return (
 		<Wrapper>
 			<Header />
@@ -41,4 +49,8 @@ const Feed = () => {
 	);
 };
 
-export default Feed;
+const mapState = (state) => ({
+	state
+});
+
+export default connect(mapState)(Feed);

@@ -60,7 +60,7 @@ export default () => {
 					<Button text={'로그인'} />
 				</Link>
 				<Link to={'/join'}>
-					<Button text={'회원가입'} bgColor={'#fff'} />
+					<Button text={'회원가입'} bgColor={'#fff'} color={'#61dafb'} />
 				</Link>
 			</Buttons>
 		</Wrapper>

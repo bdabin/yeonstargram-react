@@ -6,9 +6,9 @@ const Container = styled.button`
 	width: 100%;
 	height: 45px;
 	border-radius: 7px;
-	border: 1px solid ${(props) => props.theme.blueColor};
+	border: 1px solid ${(props) => (props.color ? props.color : props.theme.blueColor)};
 	background-color: ${(props) => (props.bgColor ? props.bgColor : props.theme.blueColor)};
-	color: ${(props) => (props.bgColor ? props.theme.blueColor : '#fff')};
+	color: ${(props) => (props.color ? props.color : '#fff')};
 	font-size: 16px;
 	display: flex;
 	justify-content: center;
@@ -19,8 +19,8 @@ const Container = styled.button`
 	}
 `;
 
-const Button = ({ text = 'OK', onClick, bgColor }) => (
-	<Container onClick={onClick} bgColor={bgColor}>
+const Button = ({ text = 'OK', onClick, bgColor, color }) => (
+	<Container onClick={onClick} bgColor={bgColor} color={color}>
 		{text}
 	</Container>
 );

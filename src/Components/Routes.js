@@ -7,13 +7,20 @@ import Home from '../Routes/Home';
 import Profile from '../Routes/Profile';
 import Join from '../Routes/Join';
 import Login from '../Routes/Login';
+import WritePost from '../Routes/WritePost';
+import Error404 from '../Routes/Error404';
+import { connect } from 'react-redux';
+import EditProfile from '../Routes/EditProfile';
 
 const LoggedInRoutes = () => (
 	<Switch>
 		<Route exact path='/' component={Feed} />
 		<Route path='/explore' component={Explore} />
 		<Route path='/search' component={Search} />
+		<Route path='/write' component={WritePost} />
+		<Route path='/profile/edit' component={EditProfile} />
 		<Route path='/:username' component={Profile} />
+		<Route component={Error404} />
 	</Switch>
 );
 
@@ -22,13 +29,16 @@ const LoggedOutRoutes = () => (
 		<Route exact path='/' component={Home} />
 		<Route path='/join' component={Join} />
 		<Route path='/login' component={Login} />
+		<Route component={Error404} />
 	</Switch>
 );
 
-const AppRouter = ({ isLoggedIn = false }) => (isLoggedIn ? <LoggedInRoutes /> : <LoggedOutRoutes />);
-
-AppRouter.propTypes = {
-	isLoggedIn: PropTypes.bool.isRequired
+const AppRouter = ({ isLoggedIn }) => {
+	return isLoggedIn ? <LoggedInRoutes /> : <LoggedOutRoutes />;
 };
 
-export default AppRouter;
+const mapState = (state) => {
+	return { isLoggedIn: state.isLoggedIn };
+};
+
+export default connect(mapState)(AppRouter);

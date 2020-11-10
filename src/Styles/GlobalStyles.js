@@ -19,4 +19,10 @@ export default createGlobalStyle`
   input:focus {
     outline:none
   }
+  button {
+    border: 0;
+    background: unset;
+    outline: 0;
+    padding: 0;
+  }
 `;
