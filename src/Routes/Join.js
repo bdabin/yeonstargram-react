@@ -109,7 +109,7 @@ const Join = ({ history }) => {
 						onChange={repassword.onChange}
 					/>
 					<Input placeholder={'이름'} value={username.value} onChange={username.onChange} />
-					<Input placeholder={'휴대폰번호'} value={phone.value} onChange={phone.value} />
+					<Input placeholder={'휴대폰번호'} value={phone.value} onChange={phone.onChange} />
 					<Button text={'회원가입'} />
 				</InputWrap>
 			</form>

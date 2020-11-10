@@ -56,7 +56,6 @@ const MyResult = styled.div`
 
 const MyPost = styled.div`
 	flex: 1 0 31%;
-	padding-bottom: 33.3333%;
 	max-width: 33.3333%;
 	border: 1px solid #fff;
 	background-image: url(${(props) => props.image});
@@ -67,6 +66,7 @@ const MyPost = styled.div`
 const MyPosts = styled.div`
 	display: flex;
 	border: 1px solid #fff;
+	flex-wrap: wrap;
 `;
 
 const EmptyText = styled.p`
