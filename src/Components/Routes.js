@@ -22,14 +22,13 @@ const LoggedOutRoutes = () => (
 		<Route exact path='/' component={Home} />
 		<Route path='/join' component={Join} />
 		<Route path='/login' component={Login} />
-		{/* <Route exact path='/' component={Auth} /> */}
 	</Switch>
 );
 
-const AppRouter = () => <LoggedOutRoutes />;
+const AppRouter = ({ isLoggedIn = false }) => (isLoggedIn ? <LoggedInRoutes /> : <LoggedOutRoutes />);
 
 AppRouter.propTypes = {
-	// isLoggedIn: PropTypes.bool.isRequired
+	isLoggedIn: PropTypes.bool.isRequired
 };
 
 export default AppRouter;

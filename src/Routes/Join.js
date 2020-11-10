@@ -1,11 +1,11 @@
 import React from 'react';
-import axios from 'axios';
+import Axios from 'axios';
 import styled, { keyframes } from 'styled-components';
 import Button from '../Components/Button';
 import { Logo } from '../Components/Icons';
 import Input from '../Components/Input';
 import useInput from '../Hooks/useInput';
-import { API_URL } from '../config';
+import { toast } from 'react-toastify';
 
 const animation = keyframes`
   from {
@@ -45,16 +45,46 @@ const Wrapper = styled.div`
 	padding: 0 16px;
 `;
 
-const Join = () => {
+const Join = ({ history }) => {
 	const email = useInput('');
 	const password = useInput('');
+	const repassword = useInput('');
 	const username = useInput('');
 	const phone = useInput('');
 
-	console.log(API_URL);
+	const createAccount = async () => {
+		if (email.value === '') {
+			toast.error('이메일을 입력하세요');
+			return;
+		}
+		if (username.value === '') {
+			toast.error('이름을 입력하세요');
+			return;
+		}
+		if (password.value !== repassword.value) {
+			toast.error('비밀번호가 일치하지 않습니다');
+			return;
+		}
+
+		try {
+			const response = await Axios.post('/api/account/join', {
+				email: email.value,
+				password: password.value,
+				username: username.value,
+				phone: phone.value
+			});
+			if (response.status === 200) {
+				toast.success('회원가입이 완료되었습니다! \n가입한 이메일로 로그인을 해주세요.');
+				history.push('/login');
+			}
+		} catch (e) {
+			toast.error(e.response.data);
+		}
+	};
 
 	const onSubmit = (e) => {
 		e.preventDefault();
+		createAccount();
 	};
 	return (
 		<Wrapper>
@@ -67,6 +97,7 @@ const Join = () => {
 				<InputWrap>
 					<Input placeholder={'이메일'} type='email' {...email} />
 					<Input placeholder={'비밀번호'} type='password' {...password} />
+					<Input placeholder={'비밀번호 확인'} type='password' {...repassword} />
 					<Input placeholder={'이름'} {...username} />
 					<Input placeholder={'휴대폰번호'} {...phone} />
 					<Button text={'회원가입'} />

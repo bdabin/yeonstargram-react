@@ -1,4 +1,7 @@
+import Axios from 'axios';
 import React from 'react';
+import { useCookies } from 'react-cookie';
+import { toast } from 'react-toastify';
 import styled, { keyframes } from 'styled-components';
 import Button from '../Components/Button';
 import { Logo } from '../Components/Icons';
@@ -40,12 +43,39 @@ const Wrapper = styled.div`
 	padding: 0 16px;
 `;
 
-const Login = () => {
+const Login = ({ history }) => {
 	const email = useInput('');
 	const password = useInput('');
+	const [cookie, setCookie] = useCookies(['accountToken']);
+
+	const requestLogin = async () => {
+		if (email.value === '') {
+			toast.error('이메일을 입력해주세요');
+			return;
+		}
+		if (password.value === '') {
+			toast.error('비밀번호를 입력해주세요.');
+			return;
+		}
+		try {
+			const response = await Axios.post('/api/account/login', {
+				email: email.value,
+				password: password.value
+			});
+
+			if (response.status === 200) {
+				const user = await Axios.get('/api/account');
+				localStorage.setItem('user', JSON.stringify(user.data));
+				history.push('/feed');
+			}
+		} catch (e) {
+			toast.error('이메일과 비밀번호를 확인해주세요.');
+		}
+	};
 
 	const onSubmit = (e) => {
 		e.preventDefault();
+		requestLogin();
 	};
 	return (
 		<Wrapper>
